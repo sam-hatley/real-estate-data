@@ -1,0 +1,10 @@
+    beautifulsoup4==4.11.1
+    numpy==1.23.4
+    pandas==1.5.3
+    pandas-gbq==0.18.1
+    prefect==2.7.10
+    prefect-gcp[cloud_storage]==0.2.5
+    prefect-sqlalchemy==0.2.2
+    pyarrow==10.0.1
+    psycopg2-binary==2.9.5
+    sqlalchemy==1.4.46

@@ -1,0 +1,111 @@
+version: 2
+
+models:
+  - name: added_london_daily
+    description: >
+      Property listings pulled from a major UK property website
+    columns:
+      - name: id
+        description: The listing identifier, available in the URL. Unique.
+        tests:
+          - unique:
+              severity: warn
+      - name: Address
+        description: The address of the listing, as provided
+      - name: Outcode
+        description: The outcode of the listing, if included in the Address field
+      - name: Postcode
+        description: The full postcode of the listing, if included in the Address field
+      - name: Price
+        description: The listing's price as an integer.
+      - name: Price_Qualifier
+        description: Where available, qualifiers such as "guide price", "offers in excess of", or "shared ownership"
+      - name: Listing_Type
+        description: Whether the record in question was a new addition or a price reduction
+      - name: Date
+        description: The date which the record was placed on the site
+      - name: Property_Type
+        description: Type of property, such as Flat, Terraced, Detached
+      - name: Bedrooms
+        description: Number of bedrooms, if included in quick facts
+      - name: Bathrooms
+        description: Number of bathrooms, if included in quick facts
+      - name: Size
+        description: Size of the property in square feet, if included in quick facts
+      - name: Tenure
+        description: Whether property is a Leasehold or Freehold
+      - name: Agent
+        description: The name of the estate agent involved in the transaction without location qualifiers
+      - name: Agent_Long
+        description: The name of the estate agent involved in the transaction, including any location qualifiers
+      - name: Agent_Address
+        description: The address of the estate agent involved in the transaction
+  - name: all_london_daily
+    description: >
+      Property listings pulled from a major UK property website
+    columns:
+      - name: id
+        description: The listing identifier, available in the URL. May not be unique, as listings may be reduced in price or otherwise modified.
+      - name: Address
+        description: The address of the listing, as provided
+      - name: Outcode
+        description: The outcode of the listing, if included in the Address field
+      - name: Postcode
+        description: The full postcode of the listing, if included in the Address field
+      - name: Price
+        description: The listing's price as an integer.
+      - name: Price_Qualifier
+        description: Where available, qualifiers such as "guide price", "offers in excess of", or "shared ownership"
+      - name: Listing_Type
+        description: Whether the record in question was a new addition or a price reduction
+      - name: Date
+        description: The date which the record was placed on the site
+      - name: Property_Type
+        description: Type of property, such as Flat, Terraced, Detached
+      - name: Bedrooms
+        description: Number of bedrooms, if included in quick facts
+      - name: Bathrooms
+        description: Number of bathrooms, if included in quick facts
+      - name: Size
+        description: Size of the property in square feet, if included in quick facts
+      - name: Tenure
+        description: Whether property is a Leasehold or Freehold
+      - name: Agent
+        description: The name of the estate agent involved in the transaction without location qualifiers
+      - name: Agent_Long
+        description: The name of the estate agent involved in the transaction, including any location qualifiers
+      - name: Agent_Address
+        description: The address of the estate agent involved in the transaction
+  - name: estate_agents_locations
+    description: >
+      Property listings organized by agent and outcode, including average price by outcode
+    columns:
+      - name: Agent
+        description: The estate agent
+        tests:
+          - not_null:
+              severity: warn
+      - name: Outcode
+        description: The outcode, or general location of the listing
+        tests:
+          - not_null:
+              severity: warn
+      - name: Prop_Count
+        description: The number of listings placed by the agent in the specific outcode
+      - name: Avg_Price
+        description: The average price of the property agent's listings in that outcode
+  - name: estate_agents_portfolios
+    description: >
+      Property listings organized by agent and outcode, including average price by outcode
+    columns:
+      - name: Agent
+        description: The estate agent
+        tests:
+          - not_null:
+              severity: warn
+      - name: Port_Value
+        description: The total value of the agent's property portfolio
+      - name: Listings
+        description: The number of listings placed by the agent in total
+      - name: Avg_Val
+        description: The average price of the property agent's listings in total

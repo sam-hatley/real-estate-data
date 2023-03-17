@@ -1,0 +1,50 @@
+###
+### A complete description of a Prefect Deployment for flow 'Ingest Flow'
+###
+name: rm_scrape
+description: null
+version: 7572fc458a3767dfbb278bdd28708506
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+work_pool_name: null
+tags: []
+parameters: {}
+schedule: null
+is_schedule_active: null
+infra_overrides: {}
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  block_type_slug: process
+  _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: Ingest Flow
+manifest_path: null
+storage: null
+path: /home/sam/estateagents
+entrypoint: parameterized.py:main
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties:
+    wait:
+      title: wait
+      default: 5
+      position: 0
+      type: integer
+    is_testrun:
+      title: is_testrun
+      default: true
+      position: 1
+      type: boolean
+  required: null
+  definitions: null
+timestamp: '2023-02-23T16:13:22.300088+00:00'

@@ -124,7 +124,7 @@ WHERE rnk = 1;
 
 > A dashboard with 2 tiles
 
-The dashboard for this project is set up on Looker Studio and is available [at this link](https://lookerstudio.google.com/s/jI63oxn9v7w).
+The dashboard for this project is set up on Looker Studio and is available [at this link](https://lookerstudio.google.com/s/jI63oxn9v7w). The dashboard contains two separate pages: one listing statistics for estate agents only, another for properties generally.
 
 ## Reproducibility
 

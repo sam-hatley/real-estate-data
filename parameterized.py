@@ -164,7 +164,9 @@ def scrape_page(link: str) -> dict:
         Price_Qualifier = np.nan
 
     for string in articles[1].stripped_strings:
-        if "£" in string:
+        if "£" in string and np.isnan(
+            Price
+        ):  # Avoid following columns which may include price per sq ft
             Price = string.replace("£", "")  # Full number in format "(xxx,)xxx,xxx"
             Price = int(Price.replace(",", ""))
         elif "Added" in string or "Reduced" in string:
@@ -325,7 +327,6 @@ def save_to_gcp(df: pd.DataFrame, today: str, is_testrun: bool) -> None:
 
 @flow(name="Ingest Flow", log_prints=True)
 def main(wait: int = 5, is_testrun: bool = True):
-
     today = datetime.today().strftime("%Y-%m-%d")
 
     if is_testrun == False:

@@ -99,7 +99,9 @@ Transformations:
 
 1. Data is read from the external table [`all_london_external`](notes/setup.md#bigquery-setup) set up in BigQuery, which references all daily parquet files, into the view [`stg_all_london_daily`](dbt/models/staging/stg_all_london_daily.sql).
 2. This view is used to create two new tables: [`added_london_daily`](dbt/models/core/added_london_daily.sql), which should consist only of unique results, and [`all_london_daily`](dbt/models/core/all_london_daily.sql), which includes all records.
-3. Records from `added_london_daily` are used to create two tables which provide statistics on estate agents: [by portfolio size](dbt/models/core/estate_agents_portfolios.sql), and [by location](dbt/models/core/estate_agents_locations.sql), or outcode.
+3. Records from [`added_london_daily`](dbt/models/core/added_london_daily.sql) are used to create two tables which provide statistics on estate agents: 
+    - [`estate_agents_portfolios`](dbt/models/core/estate_agents_portfolios.sql), which generates general statistics of each estate agent's London real estate portfolio, and
+    - [`estate_agents_locations`](dbt/models/core/estate_agents_locations.sql), which generates summary statistics by estate agent per outcode (the first part of a UK postcode).
 
 Of the transformations run, only one can be considered "essential": the `id` column in `all_london_external` is not a unique value, as estate agents may reduce the price of an existing listing, which leaves us with duplicate values for the same property. For a properly updated record, we need to have a method which selects the most recent listing, and removes all others.
 
@@ -130,11 +132,11 @@ The dashboard for this project is set up on Looker Studio and is available [at t
 
 > Instructions are clear, it's easy to run the code, and the code works
 
-**As the above criterion references "the code", I'll only reference *running* the [main ETL script](parameterized.py) here. A full setup guide, including each of the cloud services, is available at [this link](notes/setup.md).**
+**As the above criterion references "the code", I'll only reference running the [*main ETL script*](parameterized.py) in this section. A full setup guide, including each of the cloud services, is available at [this link](notes/setup.md).**
 
 ### Requirements
 
-This project was developed in WSL2 running Debian. The guide below assumes you are running the code in a Debian or Ubuntu environment. Additionally, this program requires a Google Cloud Storage bucket, which can be initalized manually, or through [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli). 
+This project was developed in WSL2 running Debian. The guide below assumes you are running the code in a Debian or Ubuntu environment. Additionally, this program requires a Google Cloud Storage bucket, which can be initalized manually, or through Terraform. 
 
 *(To initalize through terraform, update the values in [variables.tf](variables.tf) to include your GCP project name and region, before using [main.tf](main.tf) to build resources.)*
 

@@ -241,18 +241,6 @@ def scrape_page(link: str) -> dict:
             Agent = strings[1]
             Agent_Address = strings[2]
 
-            # If they haven't provided an outcode, likely the agent is in
-            # the same
-            #
-            # Edit: I'm challenging that assumption and commenting out this
-            # code for now
-            #
-            # if pd.isnull(Outcode):
-            #     try:
-            #         Outcode = re.findall("[A-Z]{1,2}[0-9][A-Z0-9]?", Agent_Address)[0]
-            #     except:
-            #         Outcode = np.nan
-
         elif "Property description" in strings:
             Description = " ".join(
                 [i for i in strings[2 : strings.index("Read more") - 1]]
@@ -317,6 +305,8 @@ def save_to_gcp(df: pd.DataFrame, today: str, is_testrun: bool) -> None:
             from_path=f"/tmp/{today}.parquet",
             to_path=f"rm_data/test/{today}.parquet",
         )
+        os.remove(f"/tmp/{today}.parquet")
+        return
 
     gcs_block.upload_from_path(
         from_path=f"/tmp/{today}.parquet",
@@ -358,4 +348,4 @@ def main(wait: int = 5, is_testrun: bool = True):
 
 
 if __name__ == "__main__":
-    main(wait=2, is_testrun=True)
+    main(wait=5, is_testrun=True)

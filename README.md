@@ -68,14 +68,14 @@ Data ingestion is orchestrated using Prefect, and consists of four intermediate 
 
 > Tables are partitioned and clustered in a way that makes sense for the upstream queries (with explanation)
 
-All data for this project is warehoused in BigQuery. The warehouse relies on an external table initalized in [BigQuery](/notes/setup.md#bigquery-setup), before [being transformed in DBT](dbt/models/core/all_london_daily.sql). The database is partitioned within BigQuery, not clustered:
+All data for this project is warehoused in BigQuery. The warehouse relies on an external table initalized in [BigQuery](/notes/setup.md#bigquery-setup), before [being transformed in DBT](dbt/models/core/all_london_daily.sql) and materialized into tables. These tables are partitioned, but are not clustered:
 
 | Method | Field/Method | Rationale |
 | - | - | - |
 | Partioning | Date/Day | Most filtering will occur on the date column. We do not have information on hour, and year is far too wide a net in this implementation.
 | Clustering | N/A | As we are handling a small amount of data (< 2 GB), it would not be efficient to cluster this set. Clustering may be set up once a sufficient quantity of data has been collected. |
 
-Partitioning is done via dbt, using the command:
+Partitioning is done via dbt, using the configuration:
 ```sql
 {{ config(
     materialized='table',

@@ -104,14 +104,14 @@ sudo apt install terraform
 ```
 
 2. Follow [this guide](https://docs.github.com/en/get-started/quickstart/set-up-git) to set up git
-3. Download this repository with `cd ~ && git clone https://github.com/<your-username>/estateagents`
+3. Download this repository with `cd ~ && git clone https://github.com/<your-username>/real-estate-data`
 4. Navigate to the repo and run `pip install -r requirements.txt`.
 
 ## 3. Cloud Services Setup
 
 ### Terraform Setup and Services Deploy
 
-1. Within your VM, navigate to `~/estateagents` and edit the file "variables.tf". The variables in the below must be updated to your personal values for region and project name:
+1. Within your VM, navigate to `~/real-estate-data` and edit the file "variables.tf". The variables in the below must be updated to your personal values for region and project name:
 
 ```
 variable "project" {
@@ -138,7 +138,7 @@ variable "region" {
 4. Add a "GCS Bucket" block with the block name "real-estate-data". Use the name of your GCS Bucket, which should be something along the lines of `data_lake_<your-project-name>`. Use the credentials provided included in step 3.
 5. Build and apply the deployment using the below in the terminal:
 ```sh 
-prefect deployment build ~/estateagents/parameterized.py:main -n rm_scrape --cron "0 22 * * *" -a
+prefect deployment build ~/real-estate-data/parameterized.py:main -n rm_scrape --cron "0 22 * * *" -a
 ```
 6. By default, the script should be in "test" mode, which scrapes only one page of results. Navigate to Prefect Cloud > Deployments and perform a quick run of the deployment to ensure that it functions. Once you are satisfied, navigate to the Parameters tab, click the drop-down menu, and edit the `is_testrun` parameter to `FALSE`.
 > **Important Note**: Do your test runs with the `is_testrun` parameter set to `TRUE`: the ingestion script is *aggressively* rate-limited, and a full run may take well over an hour to complete.
@@ -180,4 +180,4 @@ sources:
 
 1. In your browser, navigate to [Looker Studio](https://lookerstudio.google.com/) and click the "Create" button at top left to create a Data Source.
 2. Under Google Connectors, select "BigQuery", and authorize your account
-3. Navigate to the rm_data dataset and select a table to build a report with
+3. Navigate to the rm_data dataset and select a table to build a report with, and build your report.

@@ -26,7 +26,7 @@ This will include some account parameters which simplify interoperability with [
 
 ### Make and Import SSH Keys to GCP*
 
-1. In your local environment, generate a new SSH key with the below. The choice to provide a passphrase is optional, but make sure you can remember the passphrase if you use one- you will need it every time you login to the VM.
+1. In your local environment, generate a new SSH key with the below. The choice to provide a passphrase is optional, but make sure you can remember the passphrase if you use one- you will need it every time you log in to the VM.
 ```sh
 cd ~/.ssh && \
 ssh-keygen -t rsa -f gpc -C $USER -b 2048

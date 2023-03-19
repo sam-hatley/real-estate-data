@@ -140,11 +140,12 @@ variable "region" {
 ```sh 
 prefect deployment build ~/real-estate-data/parameterized.py:main -n rm_scrape --cron "0 22 * * *" -a
 ```
-6. By default, the script should be in "test" mode, which scrapes only one page of results. Navigate to Prefect Cloud > Deployments and perform a quick run of the deployment to ensure that it functions. Once you are satisfied, navigate to the Parameters tab, click the drop-down menu, and edit the `is_testrun` parameter to `FALSE`.
+6. By default, the script should be in "test" mode, which scrapes only one page of results. Navigate to Prefect Cloud > Deployments and perform a quick run of the deployment to ensure that it functions. At the end of the test run, you should have a parquet file with some entries in the GCS directory `rm_data/test/`
 > **Important Note**: Do your test runs with the `is_testrun` parameter set to `TRUE`: the ingestion script is *aggressively* rate-limited, and a full run may take well over an hour to complete.
 >
 >Similarly, for the script to continue working as intended, it is *essential* that it is rate-limited: too many requests in too short a time will see your IP address blocked, and frankly, isn't a very nice thing to do.
-7. From the GCP Console, navigate to Storage > Cloud Storage > Buckets > data_lake_<your-project> to confirm that the `rm_data/london_daily/` directory has been created. You should have at least one parquet file within. Click on it and make a note of the `gs://` file location for the next section.
+7. Once you are satisfied that the script runs correctly, navigate to the Parameters tab, click the drop-down menu, and edit the `is_testrun` parameter to `FALSE`. Perform a full run of the script.
+8. From the GCP Console, navigate to Storage > Cloud Storage > Buckets > data_lake_<your-project> to confirm that the `rm_data/london_daily/` directory has been created. You should have at least one parquet file within. Click on it and make a note of the `gs://` file location for the next section.
 
 ### BigQuery setup
 

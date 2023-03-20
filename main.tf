@@ -38,7 +38,7 @@ resource "google_bigquery_dataset" "dataset" {
   location   = var.region
 }
 
-resource "google_bigquery_table" "sheet" {
+resource "google_bigquery_table" "external_table" {
   dataset_id = var.RM_DATASET
   table_id   = "all_london_daily_external"
 

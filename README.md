@@ -37,13 +37,14 @@ The pipeline is orchestrated in [Prefect](https://www.prefect.io/), and uses [GC
 
 **Terraform, an IaC tool**, is used to initalize the Google Cloud Storage and the BigQuery datasets used in the project, following creation of the VM hosting the project. While I considered running Terraform locally, it would have required additional setup and not substantially shortened VM creation, as we are not using docker in this project.
 
-Terraform files in this project are available at [main.tf](main.tf) and [variables.tf](variables.tf). Usage is further explained in [Setup: Terraform Setup and Services Deploy](/notes/setup.md#terraform-setup-and-services-deploy)
+Terraform files in this project are available at [main.tf](main.tf) and [variables.tf](variables.tf). At this time, Terraform is used to build our data lake and data warehouse. Usage is further explained in [Setup: Terraform Setup and Services Deploy](/notes/setup.md#terraform-setup-and-services-deploy).
 
-Other cloud-based tools used in this project:
+All cloud-based tools used in this project:
 
 | Resource | Usage |
 | - | - |
 | Google Compute | Virtual machine used as host for ETL flow |
+| Terraform | IaC tool used to create GCS bucket, BQ dataset and external table |
 | Prefect Cloud | Orchestrator for ETL flow, connected via API to a Prefect Agent running on the Google Compute VM |
 | Google Cloud Storage | Data Lake, receieves and stores data from ETL flow |
 | DBT Cloud | Cloud-based data transformation, used to transform data from GCS into BQ |

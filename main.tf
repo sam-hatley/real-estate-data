@@ -37,3 +37,17 @@ resource "google_bigquery_dataset" "dataset" {
   project    = var.project
   location   = var.region
 }
+
+resource "google_bigquery_table" "sheet" {
+  dataset_id = var.RM_DATASET
+  table_id   = "all_london_daily_external"
+
+  external_data_configuration {
+    autodetect    = true
+    source_format = "PARQUET"
+
+    source_uris = [
+      "gs://${local.data_lake_bucket}_${var.project}/rm_data/london_daily/*.parquet",
+    ]
+  }
+}

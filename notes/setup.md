@@ -126,7 +126,7 @@ variable "region" {
 }
 ```
 
-2. In order, run `terraform init`, `terraform validate` to check if the configuration provided is valid, and `terraform apply` if no errors are present. This should create a data lake within Google Cloud Storage and two separate tables within BigQuery to handle HMLR and RightMove data- for this guide, only RightMove Data is relevant.
+2. In order, run `terraform init`, `terraform validate` to check if the configuration provided is valid, and `terraform apply` if no errors are present. This should create a data lake within Google Cloud Storage, a a dataset within BigQuery, and an external table within that dataset.
 
 ### Prefect Setup
 
@@ -149,15 +149,10 @@ prefect deployment build ~/real-estate-data/parameterized.py:main -n rm_scrape -
 
 ### BigQuery setup
 
-1. In the GCP Console, navigate to Bigquery and select the "+" to open a new tab. Run the below SQL command to create an external table. Ensure that you replace `<your-project-name>` with the name of your project. In `uris`, the link should match the `gs://` address you copied in the above section.
+1. In the GCP Console, navigate to Bigquery and ensure that the following have been built by Terraform:
+  - The dataset `rm_data`
+  - The external table `all_london_daily_external` which references files at `gs://data_lake_{your-project-name}/rm_data/london_daily/*.parquet`
 
-```sql
-CREATE OR REPLACE EXTERNAL TABLE <your-project-name>.rm_data.all_london_daily_external
-OPTIONS (
-  format = 'PARQUET',
-  uris = ['gs://data_lake_<your-project-name>/rm_data/london_daily/*.parquet']
-);
-```
 
 ### DBT Setup
 

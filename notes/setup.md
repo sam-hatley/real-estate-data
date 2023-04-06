@@ -32,7 +32,7 @@ cd ~/.ssh && \
 ssh-keygen -t rsa -f gpc -C $USER -b 2048
 ```
 
-2. From Google Cloud's Navigation Menu, navigate to Compute > Compute Engine > Settings > Metadata. The link to this page will be along the lines of `https://console.cloud.google.com/compute/metadata?project=<project-name>`. From within this menu, go to the "SSH KEYS" tab, select "Edit" at the top of the page, and click "ADD ITEM".
+2. From Google Cloud's Navigation Menu, navigate to Compute > Compute Engine > Settings > Metadata. The link to this page will be along the lines of `https://console.cloud.google.com/compute/metadata?project={project-name}`. From within this menu, go to the "SSH KEYS" tab, select "Edit" at the top of the page, and click "ADD ITEM".
 
 3. From the same local environment in step 1, display the public key:
 ```sh
@@ -55,14 +55,14 @@ cat gpc.pub
 
 1. From within VSCode, navigate to "Extensions" and ensure "Remote Explorer" is installed.
 2. Select the Remote Explorer extension, and select the drop-down window from within the plugin window. Select "Remote"
-3. If using WSL, copy the key from `~/.ssh` within your WSL environment to your Windows SSH folder, usually found at `C:\Users\<username>\.ssh`.
+3. If using WSL, copy the key from `~/.ssh` within your WSL environment to your Windows SSH folder, usually found at `C:\Users\{username}\.ssh`.
 4. Click the gear at the right of SSH, and select a configuration file. Update the configuration file to include the details below.
 
 ```
 Host real-estate-instance
-    HostName <VM IP address>
-    User <username>
-    IdentityFile "<private ssh key location>"
+    HostName {VM IP address}
+    User {username}
+    IdentityFile "{private ssh key location}"
 ```
 
 5. If necessary, hit "Refresh" from within remote explorer, then select the instance, and connect. If you have provided one, you will be prompted for your passphrase.
@@ -104,7 +104,7 @@ sudo apt install terraform
 ```
 
 2. Follow [this guide](https://docs.github.com/en/get-started/quickstart/set-up-git) to set up git
-3. Download this repository with `cd ~ && git clone https://github.com/<your-username>/real-estate-data`
+3. Download this repository with `cd ~ && git clone https://github.com/{your-username}/real-estate-data`
 4. Navigate to the repo and run `pip install -r requirements.txt`.
 
 ## 3. Cloud Services Setup
@@ -116,12 +116,12 @@ sudo apt install terraform
 ```
 variable "project" {
   description = "real-estate-data"
-  default = "<Your Project ID>"
+  default = "{Your Project ID}"
 }
 
 variable "region" {
   description = "Region for GCP resources. Choose as per your location: https://cloud.google.com/about/locations"
-  default = "<Your Region>"
+  default = "{Your Region}"
   type = string
 }
 ```
@@ -135,7 +135,7 @@ variable "region" {
 2. To check if everything is running correctly, run `systemctl --type=service | grep prefect` to check if `prefect-agent.service` is running.
 3. If you do not have a JSON GCP service key available, from within GCP Console, navigate to IAM & Admin > Service Accounts, select your service account for the project, and create a new key. Save the produced JSON locally.
 3. From within [Prefect Cloud](https://app.prefect.cloud/), navigate to "Blocks" and hit the "+" symbol. Add a "GCP Credentials" block with the block name "real-estate-data". Paste the contents of the JSON keyfile into "Service Account Info", then click "Create"
-4. Add a "GCS Bucket" block with the block name "real-estate-data". Use the name of your GCS Bucket, which should be something along the lines of `data_lake_<your-project-name>`. Use the credentials provided included in step 3.
+4. Add a "GCS Bucket" block with the block name "real-estate-data". Use the name of your GCS Bucket, which should be something along the lines of `data_lake_{your-project-name}`. Use the credentials provided included in step 3.
 5. Build and apply the deployment using the below in the terminal:
 ```sh 
 prefect deployment build ~/real-estate-data/parameterized.py:main -n rm_scrape --cron "0 22 * * *" -a
@@ -145,7 +145,7 @@ prefect deployment build ~/real-estate-data/parameterized.py:main -n rm_scrape -
 >
 >Similarly, for the script to continue working as intended, it is *essential* that it is rate-limited: too many requests in too short a time will see your IP address blocked, and frankly, isn't a very nice thing to do.
 7. Once you are satisfied that the script runs correctly, navigate to the Parameters tab, click the drop-down menu, and edit the `is_testrun` parameter to `FALSE`. Perform a full run of the script.
-8. From the GCP Console, navigate to Storage > Cloud Storage > Buckets > data_lake_<your-project> to confirm that the `rm_data/london_daily/` directory has been created. You should have at least one parquet file within. Click on it and make a note of the `gs://` file location for the next section.
+8. From the GCP Console, navigate to Storage > Cloud Storage > Buckets > data_lake_{your-project} to confirm that the `rm_data/london_daily/` directory has been created. You should have at least one parquet file within. Click on it and make a note of the `gs://` file location for the next section.
 
 ### BigQuery setup
 
@@ -160,7 +160,7 @@ prefect deployment build ~/real-estate-data/parameterized.py:main -n rm_scrape -
 ```yml
 sources:
     - name: staging
-      database: <your-database-name>
+      database: {your-database-name}
       schema: rm_data
 ```
 2. From [DBT Cloud](https://cloud.getdbt.com/), setup a new project with the name "real-estate-data". In Advanced Settings, the project subdirectory should be `dbt/`.

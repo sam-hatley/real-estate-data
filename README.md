@@ -26,7 +26,7 @@ To capture this data, I built an ETL pipeline based around a web scraper which:
 3. Orders the data into a dataframe and applies a schema
 4. Converts the dataframe into parquet format and uploads it to a data lake in GCP
 
-The pipeline is orchestrated in [Prefect](https://www.prefect.io/), and uses [GCP](https://cloud.google.com/) and [dbt](https://www.getdbt.com/) to further handle downstream data, which is vizualized in [Looker Studio](https://lookerstudio.google.com/s/jI63oxn9v7w).
+The pipeline is orchestrated in [Prefect](https://www.prefect.io/), and uses [GCP](https://cloud.google.com/) and [dbt](https://www.getdbt.com/) to further handle downstream data, which is vizualized in [Looker Studio](#dashboard)
 
 ![Data Flow Diagram](notes/img/diagram.png)
 
@@ -127,7 +127,21 @@ WHERE rnk = 1;
 
 > A dashboard with 2 tiles
 
-The dashboard for this project is set up on Looker Studio and is available [at this link](https://lookerstudio.google.com/s/jI63oxn9v7w). The dashboard contains two separate pages: one listing statistics for estate agents only, another for properties generally.
+The dashboard for this project was set up on Looker Studio. The dashboard contains two separate pages: one listing statistics for estate agents only, another for properties generally. Both pages could be further filtered by date, outcode (the first part of a UK postcode), estate agent, or property type.
+
+The first page, showing estate agent statistics included:
+1. A bar chart, by number of records, showing the number of records and average price of each estate agent.
+2. A pie chart, showing the value of each agent's portfolio as a percentage of all listings.
+3. A stacked bar chart, showing the number of listings, by agent, by outcode. This chart is a bit counterintuitive- looker doesn't provide an "other" bar in a stacked bar chart like this, which makes it look as if the Outcodes are not ordered by listings. They are, but you just can't see any listings that aren't from the top 20 agents.
+
+![Dashboard- Page 1](/notes/img/propertydata_dashboard_1.png)
+
+The second page, which shows general property statistics indluded:
+1. A time series showing numbers of listings, by type (New additions/price reductions), over time.
+2. Count of records and average price by property type.
+3. Average price and count of records by outcode.
+
+![Dashboard - Page 2](/notes/img/propertydata_dashboard_2.png)
 
 ## Reproducibility
 
